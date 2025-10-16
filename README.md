@@ -1,4 +1,4 @@
-# Emergencia Pablo - Webapp de Mensajes
+# NTFY Emergency App - Webapp de Mensajes
 
 Una aplicación web simple que permite a los usuarios enviar mensajes de emergencia a través de un servidor ntfy.
 
@@ -36,6 +36,11 @@ npm start
 - `NTFY_PASSWORD`: Contraseña para autenticación en ntfy (requerido)
 - `NTFY_TOPIC`: Topic/canal de ntfy donde enviar mensajes (opcional, por defecto "emergencia")
 - `PORT`: Puerto donde correr la aplicación (opcional, por defecto 3000)
+
+### Variables para Docker Registry (Opcionales)
+
+- `DOCKER_REGISTRY`: Registro personalizado para publicar la imagen (opcional)
+- `DOCKER_TAG`: Tag para la imagen Docker (opcional, por defecto "latest")
 
 ## Uso
 
@@ -75,17 +80,17 @@ Para desplegar en un servidor Linux:
 
 ### Ejemplo con systemd (opcional)
 
-Crear archivo `/etc/systemd/system/emergenciapablo.service`:
+Crear archivo `/etc/systemd/system/ntfy-emergency-app.service`:
 
 ```ini
 [Unit]
-Description=Emergencia Pablo Webapp
+Description=NTFY Emergency App
 After=network.target
 
 [Service]
 Type=simple
 User=tu-usuario
-WorkingDirectory=/ruta/a/emergenciapablo
+WorkingDirectory=/ruta/a/ntfy-emergency-app
 Environment=NTFY_URL=https://tu-servidor-ntfy.com
 Environment=NTFY_USER=tu-usuario
 Environment=NTFY_PASSWORD=tu-password
@@ -101,22 +106,35 @@ WantedBy=multi-user.target
 Luego:
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable emergenciapablo
-sudo systemctl start emergenciapablo
+sudo systemctl enable ntfy-emergency-app
+sudo systemctl start ntfy-emergency-app
 ```
 
 ## Publicación de Imagen Docker
 
 ### Construcción y Publicación Manual
 
+#### Opción 1: Sin registro personalizado (Docker Hub)
 ```bash
 # Construir y publicar
 npm run docker:build-push
+```
 
-# O manualmente
-docker build -t emergenciapablo .
-docker tag emergenciapablo tu-registro/emergenciapablo:latest
-docker push tu-registro/emergenciapablo:latest
+#### Opción 2: Con registro personalizado
+```bash
+# Configurar variables de entorno
+export DOCKER_REGISTRY=tu-registro.com
+export DOCKER_TAG=v1.0.0
+
+# Construir y publicar
+npm run docker:build-push
+```
+
+#### Opción 3: Manual
+```bash
+docker build -t ntfy-emergency-app .
+docker tag ntfy-emergency-app tu-registro/ntfy-emergency-app:latest
+docker push tu-registro/ntfy-emergency-app:latest
 ```
 
 ### Uso con Registro Privado
@@ -129,19 +147,19 @@ docker login tu-registro.com
 
 # Ejecutar la imagen
 docker run -d \
-  --name emergenciapablo \
+  --name ntfy-emergency-app \
   -p 3000:3000 \
   -e NTFY_URL=https://tu-servidor-ntfy.com \
   -e NTFY_USER=tu-usuario \
   -e NTFY_PASSWORD=tu-password \
   -e NTFY_TOPIC=emergencia \
-  tu-registro.com/emergenciapablo:latest
+  tu-registro.com/ntfy-emergency-app:latest
 ```
 
 ## Estructura del Proyecto
 
 ```
-emergenciapablo/
+ntfy-emergency-app/
 ├── server.js                    # Servidor Express principal
 ├── package.json                 # Dependencias y scripts
 ├── Dockerfile                   # Configuración de Docker
@@ -157,3 +175,4 @@ emergenciapablo/
 - Los mensajes se envían al topic configurado en `NTFY_TOPIC` (por defecto "emergencia")
 - El formato del mensaje es: "Nombre: Mensaje"
 - La aplicación valida que ambos campos estén completos antes de enviar
+

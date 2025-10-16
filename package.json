@@ -1,14 +1,15 @@
 {
-  "name": "emergenciapablo",
+  "name": "ntfy-emergency-app",
   "version": "1.0.0",
   "description": "Simple webapp to send messages via ntfy",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "docker:build": "docker build -t emergenciapablo .",
-    "docker:push": "docker push emergenciapablo",
-    "docker:build-push": "npm run docker:build && npm run docker:push"
+    "docker:build": "docker build -t ntfy-emergency-app .",
+    "docker:tag": "docker tag ntfy-emergency-app ${DOCKER_REGISTRY:-}${DOCKER_REGISTRY:+/}ntfy-emergency-app:${DOCKER_TAG:-latest}",
+    "docker:push": "docker push ${DOCKER_REGISTRY:-}${DOCKER_REGISTRY:+/}ntfy-emergency-app:${DOCKER_TAG:-latest}",
+    "docker:build-tag-push": "npm run docker:build && npm run docker:tag && npm run docker:push"
   },
   "dependencies": {
     "express": "^4.18.2",

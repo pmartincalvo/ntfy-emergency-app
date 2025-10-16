@@ -1,7 +1,7 @@
 services:
-  emergenciapablo:
+  ntfy-emergency-app:
     build: .
-    container_name: emergenciapablo
+    container_name: ntfy-emergency-app
     ports:
       - "3000:3000"
     environment:
