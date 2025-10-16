@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 const NTFY_URL = process.env.NTFY_URL;
 const NTFY_USER = process.env.NTFY_USER;
 const NTFY_PASSWORD = process.env.NTFY_PASSWORD;
-const NTFY_TOPIC = 'Emergencia';
+const NTFY_TOPIC = 'emergencia';
 
 // Middleware
 app.use(express.json());
