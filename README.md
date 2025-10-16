@@ -34,6 +34,7 @@ npm start
 - `NTFY_URL`: URL de tu servidor ntfy (requerido)
 - `NTFY_USER`: Usuario para autenticación en ntfy (requerido)
 - `NTFY_PASSWORD`: Contraseña para autenticación en ntfy (requerido)
+- `NTFY_TOPIC`: Topic/canal de ntfy donde enviar mensajes (opcional, por defecto "emergencia")
 - `PORT`: Puerto donde correr la aplicación (opcional, por defecto 3000)
 
 ## Uso
@@ -52,6 +53,7 @@ npm start
 NTFY_URL=https://tu-servidor-ntfy.com
 NTFY_USER=tu-usuario
 NTFY_PASSWORD=tu-password
+NTFY_TOPIC=emergencia
 ```
 
 2. Ejecuta con Docker Compose:
@@ -87,6 +89,7 @@ WorkingDirectory=/ruta/a/emergenciapablo
 Environment=NTFY_URL=https://tu-servidor-ntfy.com
 Environment=NTFY_USER=tu-usuario
 Environment=NTFY_PASSWORD=tu-password
+Environment=NTFY_TOPIC=emergencia
 Environment=PORT=3000
 ExecStart=/usr/bin/node server.js
 Restart=always
@@ -118,6 +121,6 @@ emergenciapablo/
 
 ## Notas
 
-- Los mensajes se envían al topic "Emergencia" en tu servidor ntfy
+- Los mensajes se envían al topic configurado en `NTFY_TOPIC` (por defecto "emergencia")
 - El formato del mensaje es: "Nombre: Mensaje"
 - La aplicación valida que ambos campos estén completos antes de enviar

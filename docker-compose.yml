@@ -8,6 +8,7 @@ services:
       - NTFY_URL=${NTFY_URL}
       - NTFY_USER=${NTFY_USER}
       - NTFY_PASSWORD=${NTFY_PASSWORD}
+      - NTFY_TOPIC=${NTFY_TOPIC:-emergencia}
       - PORT=3000
     restart: unless-stopped
     healthcheck:
