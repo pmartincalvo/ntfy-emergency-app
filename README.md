@@ -46,7 +46,7 @@ npm start
 
 ## Despliegue
 
-### Opción 1: Docker (Recomendado)
+### Opción 1: Docker Compose (Recomendado)
 
 1. Crea un archivo `.env` con tus credenciales:
 ```bash
@@ -105,18 +105,51 @@ sudo systemctl enable emergenciapablo
 sudo systemctl start emergenciapablo
 ```
 
+## Publicación de Imagen Docker
+
+### Construcción y Publicación Manual
+
+```bash
+# Construir y publicar
+npm run docker:build-push
+
+# O manualmente
+docker build -t emergenciapablo .
+docker tag emergenciapablo tu-registro/emergenciapablo:latest
+docker push tu-registro/emergenciapablo:latest
+```
+
+### Uso con Registro Privado
+
+Para usar la imagen desde un registro privado:
+
+```bash
+# Autenticarse con el registro
+docker login tu-registro.com
+
+# Ejecutar la imagen
+docker run -d \
+  --name emergenciapablo \
+  -p 3000:3000 \
+  -e NTFY_URL=https://tu-servidor-ntfy.com \
+  -e NTFY_USER=tu-usuario \
+  -e NTFY_PASSWORD=tu-password \
+  -e NTFY_TOPIC=emergencia \
+  tu-registro.com/emergenciapablo:latest
+```
+
 ## Estructura del Proyecto
 
 ```
 emergenciapablo/
-├── server.js          # Servidor Express principal
-├── package.json       # Dependencias y scripts
-├── Dockerfile         # Configuración de Docker
-├── docker-compose.yml # Orquestación con Docker Compose
+├── server.js                    # Servidor Express principal
+├── package.json                 # Dependencias y scripts
+├── Dockerfile                   # Configuración de Docker
+├── docker-compose.yml           # Orquestación con Docker Compose
 ├── public/
-│   ├── index.html     # Página principal
-│   └── style.css      # Estilos CSS
-└── README.md          # Este archivo
+│   ├── index.html              # Página principal
+│   └── style.css               # Estilos CSS
+└── README.md                   # Este archivo
 ```
 
 ## Notas
