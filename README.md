@@ -1,86 +1,81 @@
-# NTFY Emergency App - Webapp de Mensajes
+# ntfy emergency app - Message Webapp
 
-Una aplicación web simple que permite a los usuarios enviar mensajes de emergencia a través de un servidor ntfy.
+A simple web application that allows users to send emergency messages through an ntfy server.
 
-## Características
 
-- Formulario simple con campos "Tu nombre" y "Mensaje"
-- Envío automático a servidor ntfy con autenticación
-- Interfaz minimalista y responsive
-- Confirmación de envío al usuario
+## Installation
 
-## Instalación
-
-1. Instalar dependencias:
+1. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Configurar variables de entorno:
+2. Configure environment variables:
 ```bash
-export NTFY_URL="https://tu-servidor-ntfy.com"
-export NTFY_USER="tu-usuario"
-export NTFY_PASSWORD="tu-password"
-export PORT=3000  # opcional, por defecto 3000
+export NTFY_URL="https://your-ntfy-server.com"
+export NTFY_USER="your-username"
+export NTFY_PASSWORD="your-password"
+export PORT=3000  # optional, defaults to 3000
 ```
 
-3. Ejecutar la aplicación:
+3. Run the application:
 ```bash
 npm start
 ```
 
-## Variables de Entorno
+## Environment Variables
 
-- `NTFY_URL`: URL de tu servidor ntfy (requerido)
-- `NTFY_USER`: Usuario para autenticación en ntfy (requerido)
-- `NTFY_PASSWORD`: Contraseña para autenticación en ntfy (requerido)
-- `NTFY_TOPIC`: Topic/canal de ntfy donde enviar mensajes (opcional, por defecto "emergencia")
-- `PORT`: Puerto donde correr la aplicación (opcional, por defecto 3000)
+- `NTFY_URL`: URL of your ntfy server (required)
+- `NTFY_USER`: Username for ntfy authentication (required)
+- `NTFY_PASSWORD`: Password for ntfy authentication (required)
+- `NTFY_TOPIC`: ntfy topic/channel to send messages to (optional, defaults to "emergencia")
+- `PORT`: Port to run the application on (optional, defaults to 3000)
 
-### Variables para Docker Registry (Opcionales)
+### Docker Registry Variables (Optional)
 
-- `DOCKER_REGISTRY`: Registro personalizado para publicar la imagen (opcional)
-- `DOCKER_TAG`: Tag para la imagen Docker (opcional, por defecto "latest")
+- `DOCKER_REGISTRY`: Custom registry to publish the image to (optional)
+- `DOCKER_USERNAME`: Username/organization in the registry (optional)
+- `DOCKER_TAG`: Tag for the Docker image (optional, defaults to "latest")
 
-## Uso
+## Usage
 
-1. Abre tu navegador en `http://localhost:3000` (o el puerto configurado)
-2. Completa el formulario con tu nombre y mensaje
-3. Haz clic en "Enviar Mensaje"
-4. Recibirás confirmación si el mensaje se envió correctamente
+1. Open your browser to `http://localhost:3000` (or the configured port)
+2. Fill out the form with your name and message
+3. Click "Send Message"
+4. You'll receive confirmation if the message was sent successfully
 
-## Despliegue
+## Deployment
 
-### Opción 1: Docker Compose (Recomendado)
+### Option 1: Docker Compose (Recommended)
 
-1. Crea un archivo `.env` con tus credenciales:
+1. Create a `.env` file with your credentials:
 ```bash
-NTFY_URL=https://tu-servidor-ntfy.com
-NTFY_USER=tu-usuario
-NTFY_PASSWORD=tu-password
+NTFY_URL=https://your-ntfy-server.com
+NTFY_USER=your-username
+NTFY_PASSWORD=your-password
 NTFY_TOPIC=emergencia
 ```
 
-2. Ejecuta con Docker Compose:
+2. Run with Docker Compose:
 ```bash
 docker-compose up -d
 ```
 
-La aplicación estará disponible en `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
-### Opción 2: Instalación directa
+### Option 2: Direct Installation
 
-Para desplegar en un servidor Linux:
+To deploy on a Linux server:
 
-1. Sube los archivos al servidor
-2. Instala Node.js (versión 14 o superior)
-3. Configura las variables de entorno
-4. Ejecuta `npm install` para instalar dependencias
-5. Ejecuta `npm start` para iniciar la aplicación
+1. Upload files to the server
+2. Install Node.js (version 14 or higher)
+3. Configure environment variables
+4. Run `npm install` to install dependencies
+5. Run `npm start` to start the application
 
-### Ejemplo con systemd (opcional)
+### systemd Example (optional)
 
-Crear archivo `/etc/systemd/system/ntfy-emergency-app.service`:
+Create file `/etc/systemd/system/ntfy-emergency-app.service`:
 
 ```ini
 [Unit]
@@ -89,11 +84,11 @@ After=network.target
 
 [Service]
 Type=simple
-User=tu-usuario
-WorkingDirectory=/ruta/a/ntfy-emergency-app
-Environment=NTFY_URL=https://tu-servidor-ntfy.com
-Environment=NTFY_USER=tu-usuario
-Environment=NTFY_PASSWORD=tu-password
+User=your-username
+WorkingDirectory=/path/to/ntfy-emergency-app
+Environment=NTFY_URL=https://your-ntfy-server.com
+Environment=NTFY_USER=your-username
+Environment=NTFY_PASSWORD=your-password
 Environment=NTFY_TOPIC=emergencia
 Environment=PORT=3000
 ExecStart=/usr/bin/node server.js
@@ -103,76 +98,80 @@ Restart=always
 WantedBy=multi-user.target
 ```
 
-Luego:
+Then:
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable ntfy-emergency-app
 sudo systemctl start ntfy-emergency-app
 ```
 
-## Publicación de Imagen Docker
+## Docker Image Publishing
 
-### Construcción y Publicación Manual
+### Manual Build and Publishing
 
-#### Opción 1: Sin registro personalizado (Docker Hub)
+#### Option 1: Without custom registry (Docker Hub)
 ```bash
-# Construir y publicar
-npm run docker:build-push
+# Build and publish
+npm run docker:build-tag-push
 ```
 
-#### Opción 2: Con registro personalizado
+#### Option 2: With custom registry
 ```bash
-# Configurar variables de entorno
-export DOCKER_REGISTRY=tu-registro.com
+# Configure environment variables
+export DOCKER_REGISTRY=your-registry.com
+export DOCKER_USERNAME=your-username
 export DOCKER_TAG=v1.0.0
 
-# Construir y publicar
-npm run docker:build-push
+# Build and publish
+npm run docker:build-tag-push
 ```
 
-#### Opción 3: Manual
+#### Option 3: Manual
 ```bash
 docker build -t ntfy-emergency-app .
-docker tag ntfy-emergency-app tu-registro/ntfy-emergency-app:latest
-docker push tu-registro/ntfy-emergency-app:latest
+docker tag ntfy-emergency-app your-registry/ntfy-emergency-app:latest
+docker push your-registry/ntfy-emergency-app:latest
 ```
 
-### Uso con Registro Privado
+### Using with Private Registry
 
-Para usar la imagen desde un registro privado:
+To use the image from a private registry:
 
 ```bash
-# Autenticarse con el registro
-docker login tu-registro.com
+# Authenticate with the registry
+docker login your-registry.com
 
-# Ejecutar la imagen
+# Run the image
 docker run -d \
   --name ntfy-emergency-app \
   -p 3000:3000 \
-  -e NTFY_URL=https://tu-servidor-ntfy.com \
-  -e NTFY_USER=tu-usuario \
-  -e NTFY_PASSWORD=tu-password \
+  -e NTFY_URL=https://your-ntfy-server.com \
+  -e NTFY_USER=your-username \
+  -e NTFY_PASSWORD=your-password \
   -e NTFY_TOPIC=emergencia \
-  tu-registro.com/ntfy-emergency-app:latest
+  your-registry.com/ntfy-emergency-app:latest
 ```
 
-## Estructura del Proyecto
+## Project Structure
 
 ```
 ntfy-emergency-app/
-├── server.js                    # Servidor Express principal
-├── package.json                 # Dependencias y scripts
-├── Dockerfile                   # Configuración de Docker
-├── docker-compose.yml           # Orquestación con Docker Compose
+├── server.js                    # Main Express server
+├── package.json                 # Dependencies and scripts
+├── Dockerfile                   # Docker configuration
+├── docker-compose.yml           # Docker Compose orchestration
+├── scripts/                     # Helper scripts
+│   ├── docker-tag.sh           # Script to tag images
+│   └── docker-push.sh          # Script to publish images
 ├── public/
-│   ├── index.html              # Página principal
-│   └── style.css               # Estilos CSS
-└── README.md                   # Este archivo
+│   ├── index.html              # Main page
+│   └── style.css               # CSS styles
+└── README.md                   # This file
 ```
 
-## Notas
+## Notes
 
-- Los mensajes se envían al topic configurado en `NTFY_TOPIC` (por defecto "emergencia")
-- El formato del mensaje es: "Nombre: Mensaje"
-- La aplicación valida que ambos campos estén completos antes de enviar
+- Messages are sent to the topic configured in `NTFY_TOPIC` (defaults to "emergencia")
+- Message format is: "Name: Message"
+- The application validates that both fields are complete before sending
 

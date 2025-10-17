@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mensaje de Emergencia</title>
+    <title>Emergency Message</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Mensaje de Emergencia</h1>
+        <h1>Emergency Message</h1>
         <form id="messageForm">
             <div class="form-group">
-                <label for="name">Tu nombre:</label>
+                <label for="name">Your name:</label>
                 <input type="text" id="name" name="name" required>
             </div>
             
             <div class="form-group">
-                <label for="message">Mensaje:</label>
+                <label for="message">Message:</label>
                 <textarea id="message" name="message" rows="4" required></textarea>
             </div>
             
-            <button type="submit">Enviar Mensaje</button>
+            <button type="submit">Send Message</button>
         </form>
         
         <div id="status" class="status hidden"></div>
@@ -37,7 +37,7 @@
             
             // Disable form during submission
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Enviando...';
+            submitBtn.textContent = 'Sending...';
             statusDiv.className = 'status hidden';
             
             try {
@@ -56,15 +56,15 @@
                     statusDiv.className = 'status success';
                     document.getElementById('messageForm').reset();
                 } else {
-                    statusDiv.textContent = result.error || 'Error al enviar el mensaje';
+                    statusDiv.textContent = result.error || 'Error sending message';
                     statusDiv.className = 'status error';
                 }
             } catch (error) {
-                statusDiv.textContent = 'Error de conexión';
+                statusDiv.textContent = 'Connection error';
                 statusDiv.className = 'status error';
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Enviar Mensaje';
+                submitBtn.textContent = 'Send Message';
             }
         });
     </script>

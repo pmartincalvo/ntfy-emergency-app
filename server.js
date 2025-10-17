@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,7 +37,7 @@ app.post('/send-message', async (req, res) => {
         if (!name || !message) {
             return res.status(400).json({ 
                 success: false, 
-                error: 'Nombre y mensaje son requeridos' 
+                error: 'Name and message are required' 
             });
         }
         
@@ -55,11 +56,11 @@ app.post('/send-message', async (req, res) => {
         });
         
         if (ntfyResponse.status === 200) {
-            res.json({ success: true, message: 'Mensaje enviado correctamente' });
+            res.json({ success: true, message: 'Message sent successfully' });
         } else {
             res.status(500).json({ 
                 success: false, 
-                error: 'Error al enviar el mensaje' 
+                error: 'Error sending message' 
             });
         }
         
@@ -67,7 +68,7 @@ app.post('/send-message', async (req, res) => {
         console.error('Error sending message:', error.message);
         res.status(500).json({ 
             success: false, 
-            error: 'Error interno del servidor' 
+            error: 'Internal server error' 
         });
     }
 });
