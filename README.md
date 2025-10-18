@@ -37,6 +37,7 @@ npm start
 - `NTFY_PASSWORD`: Password for ntfy authentication (required)
 - `NTFY_TOPIC`: ntfy topic/channel to send messages to (optional, defaults to "emergencia")
 - `PORT`: Port to run the application on (optional, defaults to 3000)
+- `UI_MESSAGE`: Custom message to display in the UI (optional, defaults to "Emergency Message")
 
 ### Docker Registry Variables (Optional, needed to push to private registry)
 
@@ -56,6 +57,7 @@ NTFY_URL=https://your-ntfy-server.com
 NTFY_USER=your-username
 NTFY_PASSWORD=your-password
 NTFY_TOPIC=emergencia
+UI_MESSAGE=Send an emergency message
 ```
 
 2. Run with Docker:
@@ -79,6 +81,7 @@ NTFY_URL=https://your-ntfy-server.com
 NTFY_USER=your-username
 NTFY_PASSWORD=your-password
 NTFY_TOPIC=emergencia
+UI_MESSAGE=Send an emergency message
 ```
 4. Install dependencies:
 ```bash

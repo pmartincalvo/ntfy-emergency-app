@@ -27,6 +27,23 @@
     </div>
 
     <script>
+        // Load UI configuration on page load
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                // Update the title and heading with the UI message
+                document.title = config.uiMessage;
+                document.querySelector('h1').textContent = config.uiMessage;
+            } catch (error) {
+                console.error('Error loading config:', error);
+            }
+        }
+        
+        // Load config when page loads
+        loadConfig();
+        
         document.getElementById('messageForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
