@@ -11,7 +11,7 @@ const NTFY_URL = process.env.NTFY_URL;
 const NTFY_USER = process.env.NTFY_USER;
 const NTFY_PASSWORD = process.env.NTFY_PASSWORD;
 const NTFY_TOPIC = process.env.NTFY_TOPIC;
-const UI_MESSAGE = process.env.UI_MESSAGE;
+const UI_MESSAGE = process.env.UI_MESSAGE || 'Emergency Message';
 
 // Middleware
 app.use(express.json());
