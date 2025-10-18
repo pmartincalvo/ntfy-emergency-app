@@ -66,7 +66,7 @@ docker run -d \
   --name ntfy-emergency-app \
   -p 3000:3000 \
   --env-file .env \
-  forgejo.contrapeso.xyz/counterweight/ntfy-emergency-app:latest
+  ghcr.io/pmartincalvo/ntfy-emergency-app:latest
 ```
 
 The application will be available at `http://localhost:3000`
