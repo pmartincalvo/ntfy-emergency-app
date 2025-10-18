@@ -5,43 +5,37 @@ require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const UI_MESSAGE = process.env.UI_MESSAGE || 'Emergency Message';
 
 // Environment variables for ntfy configuration
 const NTFY_URL = process.env.NTFY_URL;
 const NTFY_USER = process.env.NTFY_USER;
 const NTFY_PASSWORD = process.env.NTFY_PASSWORD;
 const NTFY_TOPIC = process.env.NTFY_TOPIC;
-const UI_MESSAGE = process.env.UI_MESSAGE || 'Emergency Message';
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
-// Validate environment variables
-if (!NTFY_URL || !NTFY_USER || !NTFY_PASSWORD) {
-    console.error('Missing required environment variables: NTFY_URL, NTFY_USER, NTFY_PASSWORD');
+if (!NTFY_URL || !NTFY_USER || !NTFY_PASSWORD || !NTFY_TOPIC) {
+    console.error('Missing required environment variables: NTFY_URL, NTFY_USER, NTFY_PASSWORD, NTFY_TOPIC');
     process.exit(1);
 }
 
-// Route to serve the main page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Route to get UI configuration
 app.get('/api/config', (req, res) => {
     res.json({
         uiMessage: UI_MESSAGE || 'Emergency Message'
     });
 });
 
-// Route to handle message submission
 app.post('/send-message', async (req, res) => {
     try {
         const { name, message } = req.body;
         
-        // Validate input
         if (!name || !message) {
             return res.status(400).json({ 
                 success: false, 
@@ -49,10 +43,8 @@ app.post('/send-message', async (req, res) => {
             });
         }
         
-        // Concatenate name and message
-        const fullMessage = `${name}: ${message}`;
+        const fullMessage = `From [${name}], message: ${message}`;
         
-        // Send to ntfy
         const ntfyResponse = await axios.post(`${NTFY_URL}/${NTFY_TOPIC}`, fullMessage, {
             auth: {
                 username: NTFY_USER,
@@ -83,6 +75,6 @@ app.post('/send-message', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Ntfy URL: ${NTFY_URL}`);
-    console.log(`Ntfy Topic: ${NTFY_TOPIC}`);
+    console.log(`ntfy URL: ${NTFY_URL}`);
+    console.log(`ntfy Topic: ${NTFY_TOPIC}`);
 });
