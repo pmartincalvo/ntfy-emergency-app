@@ -34,10 +34,10 @@ npm start
 
 ## Environment Variables in detail
 
-- `NTFY_URL`: URL of your ntfy server (required)
-- `NTFY_USER`: Username for ntfy authentication (required)
-- `NTFY_PASSWORD`: Password for ntfy authentication (required)
-- `NTFY_TOPIC`: ntfy topic/channel to send messages to (optional, defaults to "emergencia")
+- `NTFY_TOPIC`: ntfy topic/channel to send messages to (required)
+- `NTFY_URL`: URL of your ntfy server (optional, defaults to https://ntfy.sh)
+- `NTFY_USER`: Username for ntfy authentication (optional, only needed for auth protected topics)
+- `NTFY_PASSWORD`: Password for ntfy authentication (optional, only needed for auth protected topics)
 - `PORT`: Port to run the application on (optional, defaults to 3000)
 - `UI_MESSAGE`: Custom message to display in the UI (optional, defaults to "Emergency Message")
 
@@ -53,21 +53,26 @@ Note that we assume that you `docker` cli is authenticated for the registry you 
 
 ### Option 1: Docker Run
 
-1. Create a `.env` file with your credentials:
-```bash
-NTFY_URL=https://your-ntfy-server.com
-NTFY_USER=your-username
-NTFY_PASSWORD=your-password
-NTFY_TOPIC=emergencia
-UI_MESSAGE=Send an emergency message
-```
-
-2. Run with Docker:
+Run with Docker, passing environment variables directly:
 ```bash
 docker run -d \
   --name ntfy-emergency-app \
   -p 3000:3000 \
-  --env-file .env \
+  -e NTFY_TOPIC=emergencia \
+  -e UI_MESSAGE="Send an emergency message" \
+  ghcr.io/pmartincalvo/ntfy-emergency-app:latest
+```
+
+For private ntfy servers with authentication:
+```bash
+docker run -d \
+  --name ntfy-emergency-app \
+  -p 3000:3000 \
+  -e NTFY_TOPIC=emergencia \
+  -e NTFY_URL=https://your-ntfy-server.com \
+  -e NTFY_USER=your-username \
+  -e NTFY_PASSWORD=your-password \
+  -e UI_MESSAGE="Send an emergency message" \
   ghcr.io/pmartincalvo/ntfy-emergency-app:latest
 ```
 
@@ -79,11 +84,12 @@ The application will be available at `http://localhost:3000`
 2. Install Node.js (version 14 or higher)
 3. Create a `.env` file with your credentials:
 ```bash
-NTFY_URL=https://your-ntfy-server.com
-NTFY_USER=your-username
-NTFY_PASSWORD=your-password
 NTFY_TOPIC=emergencia
 UI_MESSAGE=Send an emergency message
+# Optional: only needed for private ntfy servers
+# NTFY_URL=https://your-ntfy-server.com
+# NTFY_USER=your-username
+# NTFY_PASSWORD=your-password
 ```
 4. Install dependencies:
 ```bash
