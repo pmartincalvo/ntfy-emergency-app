@@ -4,6 +4,8 @@ This is a simple web application that allows users to send emergency messages to
 
 tldr: I look at messaging apps very infrequently and have no notifications for them. But what happens if there's a real emergency and someone needs to grab my attention? The only app in my phone that has notifications is the ntfy client, which I use to monitor servers and services. Why not receive a ntfy alert? This small webapp lets my trusted ones send me a high priority message if needed.
 
+[![webapp.gif](https://i.postimg.cc/85P4ZfK4/webapp.gif)](https://postimg.cc/KKwtzjy3)
+
 More details:
 - You can deploy in a single `docker run`, simply passing the ntfy details through env vars.
 - You can use it with both the official ntfy instance or with a selfhosted instance of your own.
