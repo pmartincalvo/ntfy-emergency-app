@@ -3,15 +3,9 @@ const axios = require('axios');
 const path = require('path');
 require('dotenv').config();
 
-function createApp(axiosClient) {
+function createApp(axiosClient, config) {
     const app = express();
-    const UI_MESSAGE = process.env.UI_MESSAGE || 'Emergency Message';
-
-    // Environment variables for ntfy configuration
-    const NTFY_URL = process.env.NTFY_URL;
-    const NTFY_USER = process.env.NTFY_USER;
-    const NTFY_PASSWORD = process.env.NTFY_PASSWORD;
-    const NTFY_TOPIC = process.env.NTFY_TOPIC;
+    const { uiMessage, ntfyUrl, ntfyUser, ntfyPassword, ntfyTopic } = config;
 
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
@@ -23,7 +17,7 @@ function createApp(axiosClient) {
 
     app.get('/api/config', (req, res) => {
         res.json({
-            uiMessage: UI_MESSAGE || 'Emergency Message'
+            uiMessage: uiMessage || 'Emergency Message'
         });
     });
 
@@ -40,15 +34,20 @@ function createApp(axiosClient) {
             
             const fullMessage = `From [${name}], message: ${message}`;
             
-            const ntfyResponse = await axiosClient.post(`${NTFY_URL}/${NTFY_TOPIC}`, fullMessage, {
-                auth: {
-                    username: NTFY_USER,
-                    password: NTFY_PASSWORD
-                },
+            const requestOptions = {
                 headers: {
                     'Content-Type': 'text/plain'
                 }
-            });
+            };
+            
+            if (ntfyUser && ntfyPassword) {
+                requestOptions.auth = {
+                    username: ntfyUser,
+                    password: ntfyPassword
+                };
+            }
+            
+            const ntfyResponse = await axiosClient.post(`${ntfyUrl}/${ntfyTopic}`, fullMessage, requestOptions);
             
             if (ntfyResponse.status === 200) {
                 res.json({ success: true, message: 'Message sent successfully' });
@@ -79,18 +78,27 @@ if (require.main === module) {
     const PORT = process.env.PORT || 3000;
 
     // Environment variables for ntfy configuration
-    const NTFY_URL = process.env.NTFY_URL;
+    const NTFY_URL = process.env.NTFY_URL || 'https://ntfy.sh';
     const NTFY_USER = process.env.NTFY_USER;
     const NTFY_PASSWORD = process.env.NTFY_PASSWORD;
     const NTFY_TOPIC = process.env.NTFY_TOPIC;
+    const UI_MESSAGE = process.env.UI_MESSAGE || 'Emergency Message';
 
-    if (!NTFY_URL || !NTFY_USER || !NTFY_PASSWORD || !NTFY_TOPIC) {
-        console.error('Missing required environment variables: NTFY_URL, NTFY_USER, NTFY_PASSWORD, NTFY_TOPIC');
+    if (!NTFY_TOPIC) {
+        console.error('Missing required environment variable: NTFY_TOPIC');
         process.exit(1);
     }
 
-    // Create app with real axios
-    const app = createApp(axios);
+    // Create app with configuration
+    const config = {
+        uiMessage: UI_MESSAGE,
+        ntfyUrl: NTFY_URL,
+        ntfyUser: NTFY_USER,
+        ntfyPassword: NTFY_PASSWORD,
+        ntfyTopic: NTFY_TOPIC
+    };
+    
+    const app = createApp(axios, config);
 
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);

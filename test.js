@@ -6,15 +6,17 @@ const createApp = require('./server');
 jest.mock('axios');
 const mockedAxios = axios;
 
-// Mock environment variables
-process.env.NTFY_URL = 'https://ntfy.sh';
-process.env.NTFY_USER = 'testuser';
-process.env.NTFY_PASSWORD = 'testpass';
-process.env.NTFY_TOPIC = 'test-topic';
-process.env.UI_MESSAGE = 'Test Emergency Message';
+// Create test configuration
+const testConfig = {
+  uiMessage: 'Test Emergency Message',
+  ntfyUrl: 'https://ntfy.sh',
+  ntfyUser: 'testuser',
+  ntfyPassword: 'testpass',
+  ntfyTopic: 'test-topic'
+};
 
-// Create app with mocked axios
-const app = createApp(mockedAxios);
+// Create app with mocked axios and test config
+const app = createApp(mockedAxios, testConfig);
 
 describe('Emergency Message App', () => {
   beforeEach(() => {
