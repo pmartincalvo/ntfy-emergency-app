@@ -1,8 +1,10 @@
-# ntfy emergency app - Message Webapp
+# ntfy emergency
 
-This is a simple web application that allows users to send emergency messages to a ntfy server.
+This is a simple web application that allows users to send emergency messages to a ntfy server and topic. No coding, no curl, no HTTP. Just a plain web form.
 
 tldr: I look at messaging apps very infrequently and have no notifications for them. But what happens if there's a real emergency and someone needs to grab my attention? The only app in my phone that has notifications is the ntfy client, which I use to monitor servers and services. Why not receive a ntfy alert? This small webapp lets my trusted ones send me a high priority message if needed.
+
+A gif is worth a thousand words:
 
 [![webapp.gif](https://i.postimg.cc/85P4ZfK4/webapp.gif)](https://postimg.cc/KKwtzjy3)
 
@@ -99,6 +101,17 @@ npm install
 ```bash
 npm start
 ```
+
+### Reverse proxy
+
+You probably want to put a reverse proxy in front of this. With [caddy](https://caddyserver.com/), assuming it runs on the same box, this would suffice:
+
+```
+emergency.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+```
+
 
 ## Docker Image Publishing
 
